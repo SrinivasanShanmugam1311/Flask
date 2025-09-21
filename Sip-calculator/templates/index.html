@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SIP Calculator</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="card">
+    <h1>SIP Calculator</h1>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flash">
+          {% for m in messages %}<li>{{ m }}</li>{% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('sip') }}">
+      <label>Monthly Investment (₹)</label>
+      <input type="number" name="monthly" step="0.01" min="0" required>
+
+      <label>Annual Return Rate (%)</label>
+      <input type="number" name="rate" step="0.01" min="0" required>
+
+      <label>Years</label>
+      <input type="number" name="years" step="0.1" min="0" required>
+
+      <button type="submit">Calculate</button>
+    </form>
+
+    {% if result %}
+      <div class="result">
+        <h2>Result</h2>
+        <p><strong>Months:</strong> {{ result.months }}</p>
+        <p><strong>Total Invested:</strong> ₹{{ "{:,.2f}".format(result.invested) }}</p>
+        <p><strong>Future Value:</strong> ₹{{ "{:,.2f}".format(result.future_value) }}</p>
+        <p><strong>Estimated Gain:</strong> ₹{{ "{:,.2f}".format(result.gain) }}</p>
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>

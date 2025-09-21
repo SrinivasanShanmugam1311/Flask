@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Simple Interest Calculator</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="card">
+    <h1>Simple Interest Calculator</h1>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flash">{% for m in messages %}<li>{{ m }}</li>{% endfor %}</ul>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="/">
+      <label>Principal (₹)</label>
+      <input type="number" name="principal" step="0.01" min="0" required>
+
+      <label>Annual Rate (%)</label>
+      <input type="number" name="rate" step="0.01" min="0" required>
+
+      <label>Time (Years)</label>
+      <input type="number" name="years" step="0.1" min="0" required>
+
+      <button type="submit">Calculate</button>
+    </form>
+
+    {% if result %}
+      <div class="result">
+        <h2>Result</h2>
+        <p><strong>Simple Interest:</strong> ₹{{ "{:,.2f}".format(result.simple_interest) }}</p>
+        <p><strong>Total Amount (P + SI):</strong> ₹{{ "{:,.2f}".format(result.amount) }}</p>
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>
